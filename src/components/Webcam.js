@@ -1,34 +1,28 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import WebcamCapture from "./WebcamCapture";
 import WebcamInput from "./WebcamInput";
 
 const videoConstraints = {
-    width: 640,
-    height: 480,
+    width: 1280,
+    height: 720,
     facingMode: "user",
 };
 
 const Webcam = () => {
     const [devices, setDevices] = useState([]);
-    const [currDevice, setCurrDevice] = useState([]);
+    const [currDevice, setCurrDevice] = useState("");
 
-    const handleDevices = React.useCallback(
+    const handleDevices = useCallback(
         (mediaDevices) =>
             setDevices(
-                mediaDevices.filter(({ kind }) => kind === "videoinput")
+                mediaDevices.filter(({ kind }) => kind === "videoinput") // used to query only webcams
             ),
         [setDevices]
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
         navigator.mediaDevices.enumerateDevices().then(handleDevices);
     }, [handleDevices]);
-
-    const handleClick = () => {
-        fetch("http://127.0.0.1:5000/api/receiveVideo").then((r) =>
-            console.log(r)
-        );
-    };
 
     return (
         <>
@@ -42,10 +36,6 @@ const Webcam = () => {
                 currDevice={currDevice}
                 setCurrDevice={setCurrDevice}
             />
-            <br />
-            <button type="button" onClick={handleClick}>
-                Start the run!
-            </button>
         </>
     );
 };

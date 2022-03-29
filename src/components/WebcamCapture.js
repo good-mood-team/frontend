@@ -15,24 +15,27 @@ const WebcamCapture = ({ videoConstraints, currDevice }) => {
             }}
         >
             {({ getScreenshot }) => (
-                <button
-                    type="button"
-                    onClick={() => {
-                        const imageSrc = getScreenshot();
-                        const bytes = encodeURIComponent(imageSrc).length;
-                        console.log(
-                            `${bytes} bytes\n${
-                                (bytes * 0.000001) / 8
-                            } MB\nTheoric size for 10img/sec for 30sec : ${
-                                ((bytes * 0.000001) / 8) * 300
-                            } MB\nTheoric size for 10img/sec for 60sec : ${
-                                ((bytes * 0.000001) / 8) * 600
-                            } MB`
-                        );
-                    }}
-                >
-                    Capture photo
-                </button>
+                <>
+                    <br />
+                    <button
+                        type="button"
+                        onClick={() => {
+                            const imageSrc = getScreenshot();
+                            const bytes = encodeURIComponent(imageSrc).length;
+                            console.log(
+                                `${bytes} bytes\n${
+                                    (bytes * 0.000001) / 8
+                                } MB\nTheoric size for 10img/sec for 30sec : ${
+                                    ((bytes * 0.000001) / 8) * 300
+                                } MB\nTheoric size for 10img/sec for 60sec : ${
+                                    ((bytes * 0.000001) / 8) * 600
+                                } MB`
+                            );
+                        }}
+                    >
+                        Capture photo
+                    </button>
+                </>
             )}
         </Webcam>
     );
