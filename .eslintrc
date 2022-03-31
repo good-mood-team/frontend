@@ -17,6 +17,7 @@
         "react-hooks/exhaustive-deps": "warn",
         "arrow-body-style": [0],
         "no-else-return": [0],
-        "jsx-a11y/media-has-caption": [0]
+        "jsx-a11y/media-has-caption": [0],
+        "no-param-reassign": [0]
     }
 }

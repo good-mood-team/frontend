@@ -8,7 +8,7 @@ const videoConstraints = {
     facingMode: "user",
 };
 
-const Webcam = () => {
+const Webcam = ({ webcamRef }) => {
     const [devices, setDevices] = useState([]);
     const [currDevice, setCurrDevice] = useState("");
 
@@ -29,6 +29,7 @@ const Webcam = () => {
             <WebcamCapture
                 videoConstraints={videoConstraints}
                 currDevice={currDevice}
+                webcamRef={webcamRef}
             />
             <br />
             <WebcamInput
