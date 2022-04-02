@@ -1,20 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useInterval } from "usehooks-ts";
 import Webcam from "../../components/Webcam";
-
-const screenProps = {
-    fps: 10, // number of screenshots every second
-    duration: 30, // run duration in seconds
-};
+import { genres } from "../../utils/genres";
+import { screenProps } from "../../utils/screenProps";
 
 // returns the different time codes to switch samples (sample length set to 5 seconds)
-const samplesTimeCode = () => {
-    const timeCodes = [];
-    for (let i = 1; i <= screenProps.duration / 5; i++) {
+const samplesTimeCode = (samples) => {
+    const timeCodes = {};
+    for (let i = 1; i < samples.length; i++) {
         if (i === 1) {
-            timeCodes.push((i * 5 - 5) * screenProps.fps);
+            timeCodes[(i * 5 - 5) * screenProps.fps] = {
+                genre: samples[i].genre,
+                url: samples[i].url,
+            };
         } else {
-            timeCodes.push((i * 5 - 5) * screenProps.fps - 1);
+            timeCodes[(i * 5 - 5) * screenProps.fps - 1] = {
+                genre: samples[i].genre,
+                url: samples[i].url,
+            };
         }
     }
     return timeCodes;
@@ -29,10 +32,39 @@ const Home = () => {
 
     const webcamRef = useRef(null);
 
-    const timeCodes = samplesTimeCode(); // gets the timeCodes of the different samples
+    const [timeCodes, setTimeCodes] = useState(null); // gets the timeCodes of the different samples
 
-    const [currSample, setCurrSample] = useState(timeCodes[0]);
+    const [currSample, setCurrSample] = useState(null);
     const [data, setData] = useState({}); // contains all the screenshots
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const samples = [];
+            const usedGenre = genres;
+
+            for (let i = 0; i < screenProps.duration / 10; i++) {
+                const rndGenre =
+                    usedGenre[Math.floor(Math.random() * usedGenre.length)];
+
+                const res = fetch("http://127.0.0.1:5000/api/getYoutubeUrl", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        genre: rndGenre,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json;",
+                    },
+                }).then((r) => r.json());
+
+                samples.push({ genre: rndGenre, url: res.url });
+                usedGenre.splice(usedGenre.indexOf(rndGenre), 1);
+            }
+            await setTimeCodes(samplesTimeCode(samples));
+            await setCurrSample(samples[0]);
+        };
+
+        fetchData().catch(console.error);
+    }, []);
 
     useInterval(() => {
         // if it's not the first page load && the run was stopped && the number of screenshots wanted is exceeded
@@ -68,18 +100,18 @@ const Home = () => {
             }
         } else {
             // if the timeCode is in the timeCodes array, switch sample
-            if (count !== 0 && timeCodes.includes(count)) {
-                setCurrSample(count);
+            if (count !== 0 && count in timeCodes) {
+                setCurrSample(timeCodes[count]);
             }
 
             // logic to take a screenshot and add it to the data dict
             const imageSrc = webcamRef.current.getScreenshot();
             setData((currData) => {
-                if (currData[currSample]) {
-                    currData[currSample].push(imageSrc);
+                if (currData[currSample.genre]) {
+                    currData[currSample.genre].push(imageSrc);
                     return currData;
                 } else {
-                    currData[currSample] = [imageSrc];
+                    currData[currSample.genre] = [imageSrc];
                     return currData;
                 }
             });
@@ -106,26 +138,31 @@ const Home = () => {
 
     return (
         <>
-            <h1>Home</h1>
-            <Webcam webcamRef={webcamRef} />
-            <br />
-            <p>Number of screens : {count}</p>
-            {!finished && (
-                <button type="button" onClick={handleRunState}>
-                    {isRunStarted ? "Stop the run!" : "Start the run!"}
-                </button>
-            )}
-            {finished && (
+            {timeCodes && currSample && (
                 <>
-                    <p>
-                        Settings : {screenProps.fps} images/second for{" "}
-                        {screenProps.duration} seconds
-                    </p>
-                    <button type="button" onClick={handleRestart}>
-                        Restart
-                    </button>
+                    <h1>Home</h1>
+                    <Webcam webcamRef={webcamRef} />
+                    <br />
+                    <p>Number of screens : {count}</p>
+                    {!finished && (
+                        <button type="button" onClick={handleRunState}>
+                            {isRunStarted ? "Stop the run!" : "Start the run!"}
+                        </button>
+                    )}
+                    {finished && (
+                        <>
+                            <p>
+                                Settings : {screenProps.fps} images/second for{" "}
+                                {screenProps.duration} seconds
+                            </p>
+                            <button type="button" onClick={handleRestart}>
+                                Restart
+                            </button>
+                        </>
+                    )}
                 </>
             )}
+            {!timeCodes && !currSample && <p>Loading...</p>}
         </>
     );
 };
