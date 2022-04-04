@@ -10,14 +10,14 @@ export const getTimeCodes = (samples) => {
         if (i === 1) {
             timeCodes[0] = {
                 genre: samples[i - 1].genre,
-                url: samples[i - 1].url,
+                videoId: samples[i - 1].videoId,
             };
         } else {
             timeCodes[
                 (i * SAMPLE_DURATION - SAMPLE_DURATION) * screenProps.fps - 1
             ] = {
                 genre: samples[i - 1].genre,
-                url: samples[i - 1].url,
+                videoId: samples[i - 1].videoId,
             };
         }
     }

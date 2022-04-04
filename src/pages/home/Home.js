@@ -1,13 +1,12 @@
 import React, { useRef, useState } from "react";
 import { useInterval } from "usehooks-ts";
 import Webcam from "../../components/Webcam";
+import YouTubeAudio from "../../components/YouTubeAudio";
 import { genres } from "../../utils/genres";
 import { getTimeCodes } from "../../utils/getTimeCodes";
 import { screenProps } from "../../utils/screenProps";
-import { soundPlay } from "../../utils/soundPlay";
 
 const Home = () => {
-    // eslint-disable-next-line no-unused-vars
     const [init, setInit] = useState(false); // prevent from interval to start on page load
     const [delay, setDelay] = useState(null);
     const [isRunStarted, setIsRunStarted] = useState(false); // true if the run is started
@@ -19,7 +18,6 @@ const Home = () => {
     const [timeCodes, setTimeCodes] = useState(null); // gets the timeCodes of the different samples
 
     const [currSample, setCurrSample] = useState(null); // object that contains the current music genre being played & ytb url to the music
-    const[currSound, setCurrSound] = useState(null)
     const [data, setData] = useState({}); // contains all the screenshots
 
     useInterval(() => {
@@ -36,10 +34,9 @@ const Home = () => {
             // if the number of screenshots wanted is exceeded (which means that the run successfully finished)
             if (count >= screenProps.fps * screenProps.duration) {
                 setFinished(true);
-                currSound.stop()
 
                 // sends all the screenshots to the server
-                fetch("http://127.0.0.1:5000/api/getUserStats", {
+                fetch("http://localhost:5000/api/getUserStats", {
                     method: "POST",
                     body: JSON.stringify(data),
                     headers: {
@@ -59,8 +56,6 @@ const Home = () => {
             // if the timeCode is in the timeCodes array, switch sample
             if (count !== 0 && count in timeCodes) {
                 setCurrSample(timeCodes[count]);
-                currSound.stop()
-                setCurrSound(soundPlay(timeCodes[count].url));
             }
 
             // logic to take a screenshot and add it to the data dict
@@ -93,7 +88,7 @@ const Home = () => {
                 unusedGenres.splice(unusedGenres.indexOf(rndGenre), 1);
             }
 
-            fetch("http://127.0.0.1:5000/api/getYoutubeUrl", {
+            fetch("http://localhost:5000/api/getYoutubeUrl", {
                 method: "POST",
                 body: JSON.stringify({
                     genres: rndGenres,
@@ -106,7 +101,6 @@ const Home = () => {
                 .then((r) => {
                     setTimeCodes(getTimeCodes(r.tracks));
                     setCurrSample(r.tracks[0]);
-                    setCurrSound(soundPlay(r.tracks[0].url));
                 })
                 .then(() => {
                     if (!init) {
@@ -127,6 +121,13 @@ const Home = () => {
 
     return (
         <>
+            {currSample && (
+                <YouTubeAudio
+                    videoId={currSample.videoId}
+                    finished={finished}
+                    isRunStarted={isRunStarted}
+                />
+            )}
             <h1>Home</h1>
             <Webcam webcamRef={webcamRef} />
             <br />
