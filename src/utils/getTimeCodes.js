@@ -1,8 +1,7 @@
-import { screenProps } from "./screenProps";
+import { sampleDuration } from "../config/audioProps";
+import { screenProps } from "../config/screenProps";
 
 // returns the different time codes to switch samples
-
-const SAMPLE_DURATION = 10; // in seconds
 
 export const getTimeCodes = (samples) => {
     const timeCodes = {};
@@ -14,7 +13,7 @@ export const getTimeCodes = (samples) => {
             };
         } else {
             timeCodes[
-                (i * SAMPLE_DURATION - SAMPLE_DURATION) * screenProps.fps - 1
+                (i * sampleDuration - sampleDuration) * screenProps.fps - 1
             ] = {
                 genre: samples[i - 1].genre,
                 videoId: samples[i - 1].videoId,

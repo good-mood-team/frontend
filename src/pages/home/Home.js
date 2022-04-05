@@ -2,75 +2,103 @@ import React, { useRef, useState } from "react";
 import { useInterval } from "usehooks-ts";
 import Webcam from "../../components/Webcam";
 import YouTubeAudio from "../../components/YouTubeAudio";
-import { genres } from "../../utils/genres";
+import { sampleDuration } from "../../config/audioProps";
+import { genres } from "../../config/genres";
 import { getTimeCodes } from "../../utils/getTimeCodes";
-import { screenProps } from "../../utils/screenProps";
+import { screenProps } from "../../config/screenProps";
+
+const initialState = {
+    init: false,
+    delay: null,
+    isRunStarted: false,
+    screenCount: 0,
+    isPaused: true,
+    isFinished: false,
+    timeCodes: null,
+    currSample: null,
+    data: {},
+};
 
 const Home = () => {
-    const [init, setInit] = useState(false); // prevent from interval to start on page load
-    const [delay, setDelay] = useState(null);
-    const [isRunStarted, setIsRunStarted] = useState(false); // true if the run is started
-    const [count, setCount] = useState(0); // screenshots count
-    const [finished, setFinished] = useState(false); // true if the run successfully finished
+    const [
+        {
+            init,
+            delay,
+            isRunStarted,
+            screenCount,
+            isPaused,
+            isFinished,
+            timeCodes,
+            currSample,
+            data,
+        },
+        setState,
+    ] = useState(initialState);
+
+    const clearState = () => {
+        setState({ ...initialState });
+    };
 
     const webcamRef = useRef(null);
 
-    const [timeCodes, setTimeCodes] = useState(null); // gets the timeCodes of the different samples
-
-    const [currSample, setCurrSample] = useState(null); // object that contains the current music genre being played & ytb url to the music
-    const [data, setData] = useState({}); // contains all the screenshots
-
     useInterval(() => {
         // if it's not the first page load && the run was stopped && the number of screenshots wanted is exceeded
-        if (
-            !(
-                init &&
-                isRunStarted &&
-                count < screenProps.fps * screenProps.duration
-            )
-        ) {
-            setDelay(null); // setting the delay to null stops the interval
+        if (!isPaused) {
+            if (
+                !(
+                    init &&
+                    isRunStarted &&
+                    screenCount < screenProps.fps * screenProps.duration
+                )
+            ) {
+                setState((prevState) => ({ ...prevState, delay: null })); // stops the interval
 
-            // if the number of screenshots wanted is exceeded (which means that the run successfully finished)
-            if (count >= screenProps.fps * screenProps.duration) {
-                setFinished(true);
+                // run successfully finished
+                if (screenCount >= screenProps.fps * screenProps.duration) {
+                    setState((prevState) => ({
+                        ...prevState,
+                        isFinished: true,
+                    }));
 
-                // sends all the screenshots to the server
-                fetch("http://localhost:5000/api/getUserStats", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: {
-                        "Content-Type": "application/json;",
-                    },
-                })
-                    .then((r) => r.json())
-                    .then((r) => console.log(r));
-            }
-            // if the run was stopped by the user (which means that the run is not completed so it is aborted)
-            else {
-                setIsRunStarted(false);
-                setCount(0);
-                setData({});
-            }
-        } else {
-            // if the timeCode is in the timeCodes array, switch sample
-            if (count !== 0 && count in timeCodes) {
-                setCurrSample(timeCodes[count]);
-            }
-
-            // logic to take a screenshot and add it to the data dict
-            const imageSrc = webcamRef.current.getScreenshot();
-            setData((currData) => {
-                if (currData[currSample.genre]) {
-                    currData[currSample.genre].push(imageSrc);
-                    return currData;
-                } else {
-                    currData[currSample.genre] = [imageSrc];
-                    return currData;
+                    // sends all the screenshots to the server
+                    fetch(`http://localhost:5000/api/getUserStats`, {
+                        method: "POST",
+                        body: JSON.stringify(data),
+                        headers: {
+                            "Content-Type": "application/json;",
+                        },
+                    })
+                        .then((r) => r.json())
+                        .then((r) => console.log(r));
                 }
-            });
+                // run is not completed so it is aborted
+                else {
+                    clearState();
+                }
+            } else {
+                // if the timeCode is in the timeCodes array, switch sample
+                if (screenCount !== 0 && screenCount in timeCodes) {
+                    setState((prevState) => ({
+                        ...prevState,
+                        currSample: timeCodes[screenCount],
+                        isPaused: true,
+                    }));
+                }
 
-            setCount((currCount) => currCount + 1);
+                // logic to take a screenshot and add it to the data dict
+                const imageSrc = webcamRef.current.getScreenshot();
+                setState((prevState) => ({
+                    ...prevState,
+                    data: {
+                        ...prevState.data,
+                        [currSample.genre]: [
+                            ...(prevState.data[currSample.genre] ?? []),
+                            imageSrc,
+                        ],
+                    },
+                    screenCount: screenCount + 1,
+                }));
+            }
         }
     }, delay);
 
@@ -79,7 +107,7 @@ const Home = () => {
             const unusedGenres = [...genres];
             const rndGenres = [];
 
-            for (let i = 0; i < screenProps.duration / 10; i++) {
+            for (let i = 0; i < screenProps.duration / sampleDuration; i++) {
                 const rndGenre =
                     unusedGenres[
                         Math.floor(Math.random() * unusedGenres.length)
@@ -88,7 +116,7 @@ const Home = () => {
                 unusedGenres.splice(unusedGenres.indexOf(rndGenre), 1);
             }
 
-            fetch("http://localhost:5000/api/getYoutubeUrl", {
+            fetch(`http://localhost:5000/api/getYoutubeUrl`, {
                 method: "POST",
                 body: JSON.stringify({
                     genres: rndGenres,
@@ -99,24 +127,29 @@ const Home = () => {
             })
                 .then((r) => r.json())
                 .then((r) => {
-                    setTimeCodes(getTimeCodes(r.tracks));
-                    setCurrSample(r.tracks[0]);
+                    setState((prevState) => ({
+                        ...prevState,
+                        timeCodes: getTimeCodes(r.tracks),
+                        currSample: r.tracks[0],
+                    }));
                 })
                 .then(() => {
                     if (!init) {
-                        setInit(true);
+                        setState((prevState) => ({ ...prevState, init: true }));
                     }
                 });
         }
-        setDelay(screenProps.fps * 10); // (* 10) converts to delay between every screenshot
-        setIsRunStarted((currRunState) => !currRunState);
+
+        // (* 10) converts to delay between every screenshot
+        setState((prevState) => ({
+            ...prevState,
+            delay: screenProps.fps * 10,
+            isRunStarted: !isRunStarted,
+        }));
     };
 
     const handleRestart = () => {
-        setIsRunStarted(false);
-        setCount(0);
-        setFinished(false);
-        setData({});
+        clearState();
     };
 
     return (
@@ -124,20 +157,22 @@ const Home = () => {
             {currSample && (
                 <YouTubeAudio
                     videoId={currSample.videoId}
-                    finished={finished}
+                    isFinished={isFinished}
                     isRunStarted={isRunStarted}
+                    init={init}
+                    setState={setState}
                 />
             )}
             <h1>Home</h1>
             <Webcam webcamRef={webcamRef} />
             <br />
-            <p>Number of screens : {count}</p>
-            {!finished && (
+            <p>Number of screens : {screenCount}</p>
+            {!isFinished && (
                 <button type="button" onClick={handleRunState}>
                     {isRunStarted ? "Stop the run!" : "Start the run!"}
                 </button>
             )}
-            {finished && (
+            {isFinished && (
                 <>
                     <p>
                         Settings : {screenProps.fps} images/second for{" "}
