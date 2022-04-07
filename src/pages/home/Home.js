@@ -17,6 +17,7 @@ const initialState = {
     timeCodes: null,
     currSample: null,
     data: {},
+    emotions: {},
 };
 
 const Home = () => {
@@ -31,6 +32,7 @@ const Home = () => {
             timeCodes,
             currSample,
             data,
+            emotions,
         },
         setState,
     ] = useState(initialState);
@@ -69,7 +71,13 @@ const Home = () => {
                         },
                     })
                         .then((r) => r.json())
-                        .then((r) => console.log(r));
+                        .then((r) => {
+                            console.log(r);
+                            setState((prevState) => ({
+                                ...prevState,
+                                emotions: r,
+                            }));
+                        });
                 }
                 // run is not completed so it is aborted
                 else {
@@ -178,6 +186,7 @@ const Home = () => {
                         Settings : {screenProps.fps} images/second for{" "}
                         {screenProps.duration} seconds
                     </p>
+                    {emotions && <p>Emotions received!</p>}
                     <button type="button" onClick={handleRestart}>
                         Restart
                     </button>

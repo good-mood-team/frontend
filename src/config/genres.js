@@ -6,7 +6,7 @@ export const genres = [
     "HIP HOP",
     "JAZZ",
     "POP",
-    "R&B",
+    "RYTHM AND BLUES",
     "ROCK",
     "METAL",
     "PUNK",
