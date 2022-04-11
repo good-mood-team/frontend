@@ -5,9 +5,10 @@ import YouTubeAudio from "../../components/YouTubeAudio";
 import { sampleDuration } from "../../config/audioProps";
 import { genres } from "../../config/genres";
 import { getTimeCodes } from "../../utils/getTimeCodes";
-import { screenProps } from "../../config/screenProps";
 
 const initialState = {
+    duration: 30,
+    fps: 5,
     init: false,
     delay: null,
     isRunStarted: false,
@@ -23,6 +24,8 @@ const initialState = {
 const Home = () => {
     const [
         {
+            duration,
+            fps,
             init,
             delay,
             isRunStarted,
@@ -50,13 +53,13 @@ const Home = () => {
                 !(
                     init &&
                     isRunStarted &&
-                    screenCount < screenProps.fps * screenProps.duration
+                    screenCount < fps * duration
                 )
             ) {
                 setState((prevState) => ({ ...prevState, delay: null })); // stops the interval
 
                 // run successfully finished
-                if (screenCount >= screenProps.fps * screenProps.duration) {
+                if (screenCount >= fps * duration) {
                     setState((prevState) => ({
                         ...prevState,
                         isFinished: true,
@@ -115,7 +118,7 @@ const Home = () => {
             const unusedGenres = [...genres];
             const rndGenres = [];
 
-            for (let i = 0; i < screenProps.duration / sampleDuration; i++) {
+            for (let i = 0; i < duration / sampleDuration; i++) {
                 const rndGenre =
                     unusedGenres[
                         Math.floor(Math.random() * unusedGenres.length)
@@ -151,7 +154,7 @@ const Home = () => {
         // (* 10) converts to delay between every screenshot
         setState((prevState) => ({
             ...prevState,
-            delay: screenProps.fps * 10,
+            delay: fps * 10,
             isRunStarted: !isRunStarted,
         }));
     };
@@ -172,7 +175,7 @@ const Home = () => {
                 />
             )}
             <h1>Home</h1>
-            <Webcam webcamRef={webcamRef} />
+            <Webcam duration={duration} fps={fps} setState={setState} webcamRef={webcamRef} />
             <br />
             <p>Number of screens : {screenCount}</p>
             {!isFinished && (
@@ -183,8 +186,8 @@ const Home = () => {
             {isFinished && (
                 <>
                     <p>
-                        Settings : {screenProps.fps} images/second for{" "}
-                        {screenProps.duration} seconds
+                        Settings : {fps} images/second for{" "}
+                        {duration} seconds
                     </p>
                     {emotions && <p>Emotions received!</p>}
                     <button type="button" onClick={handleRestart}>
