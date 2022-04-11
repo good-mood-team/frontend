@@ -63,7 +63,7 @@ const Home = () => {
                     }));
 
                     // sends all the screenshots to the server
-                    fetch(`http://localhost:5000/api/getUserStats`, {
+                    fetch(`http://localhost:5003/api/getUserStats`, {
                         method: "POST",
                         body: JSON.stringify(data),
                         headers: {
@@ -124,7 +124,7 @@ const Home = () => {
                 unusedGenres.splice(unusedGenres.indexOf(rndGenre), 1);
             }
 
-            fetch(`http://localhost:5000/api/getYoutubeUrl`, {
+            fetch(`http://localhost:5003/api/getYoutubeUrl`, {
                 method: "POST",
                 body: JSON.stringify({
                     genres: rndGenres,
