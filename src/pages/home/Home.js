@@ -49,13 +49,7 @@ const Home = () => {
     useInterval(() => {
         // if it's not the first page load && the run was stopped && the number of screenshots wanted is exceeded
         if (!isPaused) {
-            if (
-                !(
-                    init &&
-                    isRunStarted &&
-                    screenCount < fps * duration
-                )
-            ) {
+            if (!(init && isRunStarted && screenCount < fps * duration)) {
                 setState((prevState) => ({ ...prevState, delay: null })); // stops the interval
 
                 // run successfully finished
@@ -175,7 +169,44 @@ const Home = () => {
                 />
             )}
             <h1>Home</h1>
-            <Webcam duration={duration} fps={fps} setState={setState} webcamRef={webcamRef} />
+            <Webcam
+                isRunStarted={isRunStarted}
+                duration={duration}
+                fps={fps}
+                setState={setState}
+                webcamRef={webcamRef}
+            />
+            <br />
+            {!isRunStarted && (
+                <>
+                    <br />
+                    <p>Duration (in seconds) :</p>
+                    <input
+                        type="text"
+                        pattern="[0-9]*"
+                        onChange={(ev) =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                duration: ev.target.value,
+                            }))
+                        }
+                        value={duration}
+                    />
+                    <br />
+                    <p>FPS :</p>
+                    <input
+                        type="text"
+                        pattern="[0-9]*"
+                        onChange={(ev) =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                fps: ev.target.value,
+                            }))
+                        }
+                        value={fps}
+                    />
+                </>
+            )}
             <br />
             <p>Number of screens : {screenCount}</p>
             {!isFinished && (
@@ -186,8 +217,7 @@ const Home = () => {
             {isFinished && (
                 <>
                     <p>
-                        Settings : {fps} images/second for{" "}
-                        {duration} seconds
+                        Settings : {fps} images/second for {duration} seconds
                     </p>
                     {emotions && <p>Emotions received!</p>}
                     <button type="button" onClick={handleRestart}>

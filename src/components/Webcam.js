@@ -8,7 +8,7 @@ const videoConstraints = {
     facingMode: "user",
 };
 
-const Webcam = ({ webcamRef, setState, duration, fps }) => {
+const Webcam = ({ webcamRef }) => {
     const [devices, setDevices] = useState([]);
     const [currDevice, setCurrDevice] = useState("");
 
@@ -36,32 +36,6 @@ const Webcam = ({ webcamRef, setState, duration, fps }) => {
                 devices={devices}
                 currDevice={currDevice}
                 setCurrDevice={setCurrDevice}
-            />
-            <br />
-            <p>Duration (in seconds) :</p>
-            <input
-                type="text"
-                pattern="[0-9]*"
-                onChange={(ev) =>
-                    setState((prevState) => ({
-                        ...prevState,
-                        duration: ev.target.value,
-                    }))
-                }
-                value={duration}
-            />
-            <br />
-            <p>FPS :</p>
-            <input
-                type="text"
-                pattern="[0-9]*"
-                onChange={(ev) =>
-                    setState((prevState) => ({
-                        ...prevState,
-                        fps: ev.target.value,
-                    }))
-                }
-                value={fps}
             />
         </>
     );
