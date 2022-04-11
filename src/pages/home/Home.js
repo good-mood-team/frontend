@@ -63,7 +63,7 @@ const Home = () => {
                     }));
 
                     // sends all the screenshots to the server
-                    fetch(`https://gm-api.ggbonsai.app:5003/getUserStats`, {
+                    fetch(`https://gm-api.ggbonsai.app/getUserStats`, {
                         method: "POST",
                         body: JSON.stringify(data),
                         headers: {
@@ -124,7 +124,7 @@ const Home = () => {
                 unusedGenres.splice(unusedGenres.indexOf(rndGenre), 1);
             }
 
-            fetch(`https://gm-api.ggbonsai.app:5003/getYoutubeUrl`, {
+            fetch(`https://gm-api.ggbonsai.app/getYoutubeUrl`, {
                 method: "POST",
                 body: JSON.stringify({
                     genres: rndGenres,
