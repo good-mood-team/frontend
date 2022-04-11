@@ -58,7 +58,7 @@ const Webcam = ({ webcamRef, setState, duration, fps }) => {
                 onChange={(ev) =>
                     setState((prevState) => ({
                         ...prevState,
-                        duration: ev.target.value,
+                        fps: ev.target.value,
                     }))
                 }
                 value={fps}
