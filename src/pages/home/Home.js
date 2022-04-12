@@ -8,7 +8,7 @@ import { getTimeCodes } from "../../utils/getTimeCodes";
 
 const initialState = {
     duration: 30,
-    fps: 5,
+    fps: 10,
     init: false,
     delay: null,
     isRunStarted: false,
@@ -148,7 +148,7 @@ const Home = () => {
         // (* 10) converts to delay between every screenshot
         setState((prevState) => ({
             ...prevState,
-            delay: fps * 10,
+            delay: fps * 40,
             isRunStarted: !isRunStarted,
         }));
     };
@@ -169,13 +169,7 @@ const Home = () => {
                 />
             )}
             <h1>Home</h1>
-            <Webcam
-                isRunStarted={isRunStarted}
-                duration={duration}
-                fps={fps}
-                setState={setState}
-                webcamRef={webcamRef}
-            />
+            <Webcam webcamRef={webcamRef} />
             <br />
             {!isRunStarted && (
                 <>
