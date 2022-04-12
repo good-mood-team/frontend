@@ -148,7 +148,7 @@ const Home = () => {
         // (* 10) converts to delay between every screenshot
         setState((prevState) => ({
             ...prevState,
-            delay: fps * 40,
+            delay: (duration * 1000) / (fps * duration),
             isRunStarted: !isRunStarted,
         }));
     };
