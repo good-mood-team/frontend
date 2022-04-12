@@ -8,7 +8,7 @@ const WebcamCapture = ({
 }) => {
     return (
         <Webcam
-            style={{ transform: "scaleX(-1)" }}
+            style={{ transform: "scaleX(-1)", margin: "0", padding: "0", position: "relative" }}
             audio={false}
             height={420}
             width={750}
