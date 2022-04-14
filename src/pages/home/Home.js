@@ -1,4 +1,3 @@
-import { passiveSupport } from "passive-events-support/src/utils";
 import React, { useRef, useState } from "react";
 import { useInterval } from "usehooks-ts";
 import Webcam from "../../components/Webcam";
@@ -23,8 +22,6 @@ const initialState = {
 };
 
 const Home = () => {
-    passiveSupport({ debug: true });
-
     const [
         {
             duration,
