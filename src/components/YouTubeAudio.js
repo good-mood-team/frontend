@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import YouTube from "react-youtube";
+import YoutubeBackground from "react-youtube-background";
+// import YouTube from "react-youtube";
 import { sampleDuration } from "../config/audioProps";
 
 const rnd = Math.floor(Math.random() * 1800); // between 0 min and 30 min (in seconds)
 
 const opts = {
-    height: "500",
-    width: "700",
     playerVars: {
         autoplay: 1,
         playsinline: 1,
@@ -31,7 +30,7 @@ const YouTubeAudio = ({ videoId, isFinished, isRunStarted, setState }) => {
 
     return (
         <div style={{ position: "relative", display: "block" }}>
-            <YouTube
+            <YoutubeBackground
                 videoId={videoId}
                 onEnd={() => {
                     setState((prevState) => ({
@@ -46,7 +45,7 @@ const YouTubeAudio = ({ videoId, isFinished, isRunStarted, setState }) => {
                         isPaused: false,
                     }));
                 }}
-                opts={opts}
+                playerOptions={opts}
             />
         </div>
     );
