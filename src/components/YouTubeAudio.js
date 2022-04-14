@@ -9,6 +9,7 @@ const opts = {
     width: "700",
     playerVars: {
         autoplay: 1,
+        playsinline: 1,
         start: rnd,
         end: sampleDuration + rnd,
         origin: "http://localhost:3000",
