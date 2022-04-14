@@ -121,8 +121,6 @@ const Home = () => {
                 unusedGenres.splice(unusedGenres.indexOf(rndGenre), 1);
             }
 
-            console.log(rndGenres);
-
             fetch(`https://gm-api.ggbonsai.app/getYoutubeUrl`, {
                 method: "POST",
                 body: JSON.stringify({
@@ -136,10 +134,9 @@ const Home = () => {
                 .then((r) => {
                     setState((prevState) => ({
                         ...prevState,
-                        timeCodes: getTimeCodes(r.tracks),
+                        timeCodes: getTimeCodes(r.tracks, fps),
                         currSample: r.tracks[0],
                     }));
-                    console.log(getTimeCodes(r.tracks));
                 })
                 .then(() => {
                     if (!init) {
