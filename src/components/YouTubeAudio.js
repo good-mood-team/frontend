@@ -5,11 +5,10 @@ import { sampleDuration } from "../config/audioProps";
 const rnd = Math.floor(Math.random() * 1800); // between 0 min and 30 min (in seconds)
 
 const opts = {
-    height: "0",
-    width: "0",
+    height: "500",
+    width: "700",
     playerVars: {
         autoplay: 1,
-        playsinline: 1,
         start: rnd,
         end: sampleDuration + rnd,
         origin: "http://localhost:3000",
@@ -30,7 +29,7 @@ const YouTubeAudio = ({ videoId, isFinished, isRunStarted, setState }) => {
     }, [isFinished, isRunStarted, player]);
 
     return (
-        <div style={{ position: "absolute", display: "none" }}>
+        <div style={{ position: "relative", display: "block" }}>
             <YouTube
                 videoId={videoId}
                 onEnd={() => {
