@@ -59,6 +59,8 @@ const Home = () => {
                         isFinished: true,
                     }));
 
+                    console.log(data);
+
                     // sends all the screenshots to the server
                     fetch(`https://gm-api.ggbonsai.app/getUserStats`, {
                         method: "POST",
