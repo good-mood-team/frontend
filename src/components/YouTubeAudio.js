@@ -15,34 +15,38 @@ const opts = {
     },
 };
 
-const YouTubeAudio = ({ videoId, isFinished, isRunStarted, setState }) => {
+const YouTubeAudio = ({ videoId, isPaused, isVideoLoaded, setState }) => {
     const [player, setPlayer] = useState(null);
 
     useEffect(() => {
         if (player) {
-            if (isFinished || !isRunStarted) {
+            if (isPaused) {
                 player.stopVideo();
-            } else {
+            } else if (!isPaused && isVideoLoaded) {
                 player.playVideo();
+            } else {
+                player.stopVideo();
             }
         }
-    }, [isFinished, isRunStarted, player]);
+    }, [isPaused, isVideoLoaded, player]);
 
     return (
         <div style={{ position: "relative", display: "block" }}>
             <YouTube
                 videoId={videoId}
+                loading="lazy"
                 onEnd={() => {
                     setState((prevState) => ({
                         ...prevState,
                         isPaused: true,
+                        isVideoLoaded: false,
                     }));
                 }}
                 onReady={(ev) => {
                     setPlayer(ev.target);
                     setState((prevState) => ({
                         ...prevState,
-                        isPaused: false,
+                        isVideoLoaded: true,
                     }));
                 }}
                 opts={opts}
