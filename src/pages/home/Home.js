@@ -5,7 +5,7 @@ import YouTubeAudio from "../../components/YouTubeAudio";
 import { sampleDuration } from "../../config/audioProps";
 import { genres } from "../../config/genres";
 
-const PRODUCTION = false;
+const PRODUCTION = true;
 
 const initialState = {
     numGenres: 3,
