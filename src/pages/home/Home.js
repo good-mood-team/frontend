@@ -87,7 +87,10 @@ const Home = () => {
                         isPaused: true,
                     }));
 
+                    console.log("This should fire right now!");
+
                     setTimeout(() => {
+                        console.log("This should fire after 2 seconds!");
                         setState((prevState) => ({
                             ...prevState,
                             waitingForNextGenre: true,
