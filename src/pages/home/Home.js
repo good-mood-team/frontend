@@ -100,7 +100,7 @@ const Home = () => {
                     // sends all the screenshots to the server
                     fetch(
                         PRODUCTION
-                            ? "https://gm-api.ggbonsai.app/getUserStats"
+                            ? "https://api.good-mood.icu/getUserStats"
                             : "http://localhost:5000/getUserStats",
                         {
                             method: "POST",
@@ -156,7 +156,7 @@ const Home = () => {
 
             fetch(
                 PRODUCTION
-                    ? "https://gm-api.ggbonsai.app/getYoutubeUrl"
+                    ? "https://api.good-mood.icu/getYoutubeUrl"
                     : "http://localhost:5000/getYoutubeUrl",
                 {
                     method: "POST",
