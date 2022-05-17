@@ -262,25 +262,24 @@ const Home = () => {
                     </button>
                 </>
             )}
-            {isFinished &&
-                Object.keys(emotions).length !== numGenres(<p>Loading...</p>)}
-            {isFinished &&
-                Object.keys(emotions).length ===
-                    numGenres(
-                        <>
-                            <p>
-                                Settings : {fps} images/second for{" "}
-                                {numGenres * sampleDuration} seconds
-                            </p>
-                            <div>
-                                <pre>{JSON.stringify(emotions, null, 2)}</pre>
-                            </div>
-                            {emotions && <p>Emotions received!</p>}
-                            <button type="button" onClick={handleRestart}>
-                                Restart
-                            </button>
-                        </>
-                    )}
+            {isFinished && Object.keys(emotions).length !== numGenres && (
+                <p>Loading...</p>
+            )}
+            {isFinished && Object.keys(emotions).length === numGenres && (
+                <>
+                    <p>
+                        Settings : {fps} images/second for{" "}
+                        {numGenres * sampleDuration} seconds
+                    </p>
+                    <div>
+                        <pre>{JSON.stringify(emotions, null, 2)}</pre>
+                    </div>
+                    {emotions && <p>Emotions received!</p>}
+                    <button type="button" onClick={handleRestart}>
+                        Restart
+                    </button>
+                </>
+            )}
         </>
     );
 };
