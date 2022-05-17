@@ -5,7 +5,7 @@ import YouTubeAudio from "../../components/YouTubeAudio";
 import { sampleDuration } from "../../config/audioProps";
 import { genres } from "../../config/genres";
 
-const PRODUCTION = true;
+const PRODUCTION = false;
 
 const initialState = {
     numGenres: 3,
@@ -262,21 +262,25 @@ const Home = () => {
                     </button>
                 </>
             )}
-            {isFinished && (
-                <>
-                    <p>
-                        Settings : {fps} images/second for{" "}
-                        {numGenres * sampleDuration} seconds
-                    </p>
-                    <div>
-                        <pre>{JSON.stringify(emotions, null, 2)}</pre>
-                    </div>
-                    {emotions && <p>Emotions received!</p>}
-                    <button type="button" onClick={handleRestart}>
-                        Restart
-                    </button>
-                </>
-            )}
+            {isFinished &&
+                Object.keys(emotions).length !== numGenres(<p>Loading...</p>)}
+            {isFinished &&
+                Object.keys(emotions).length ===
+                    numGenres(
+                        <>
+                            <p>
+                                Settings : {fps} images/second for{" "}
+                                {numGenres * sampleDuration} seconds
+                            </p>
+                            <div>
+                                <pre>{JSON.stringify(emotions, null, 2)}</pre>
+                            </div>
+                            {emotions && <p>Emotions received!</p>}
+                            <button type="button" onClick={handleRestart}>
+                                Restart
+                            </button>
+                        </>
+                    )}
         </>
     );
 };
