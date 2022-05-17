@@ -118,7 +118,7 @@ const Home = () => {
                                 emotions: {
                                     ...emotions,
                                     [currGenreToSend.genre]:
-                                        r.emotions[currGenre.genre],
+                                        r.emotions[currGenreToSend.genre],
                                 },
                             }));
                         });

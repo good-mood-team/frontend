@@ -8,13 +8,12 @@ const opts = {
     height: "500",
     width: "700",
     playerVars: {
+        autoplay: 0,
         start: rnd,
         end: sampleDuration + rnd,
         origin: "http://localhost:3000",
     },
 };
-
-console.log(`Youtube video will start at ${rnd} seconds.`);
 
 const YouTubeAudio = ({ videoId, isPaused, isVideoLoaded, setState }) => {
     const [player, setPlayer] = useState(null);
