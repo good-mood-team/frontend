@@ -85,8 +85,14 @@ const Home = () => {
                         currGenre: toPlayGenres[0],
                         toPlayGenres,
                         isPaused: true,
-                        waitingForNextGenre: true,
                     }));
+
+                    setTimeout(() => {
+                        setState((prevState) => ({
+                            ...prevState,
+                            waitingForNextGenre: true,
+                        }));
+                    }, 2000);
 
                     // sends all the screenshots to the server
                     fetch(
@@ -262,24 +268,26 @@ const Home = () => {
                     </button>
                 </>
             )}
-            {isFinished && Object.keys(emotions).length !== parseInt(numGenres, 10) && (
-                <p>Loading...</p>
-            )}
-            {isFinished && Object.keys(emotions).length === parseInt(numGenres, 10) && (
-                <>
-                    <p>
-                        Settings : {fps} images/second for{" "}
-                        {numGenres * sampleDuration} seconds
-                    </p>
-                    <div>
-                        <pre>{JSON.stringify(emotions, null, 2)}</pre>
-                    </div>
-                    {emotions && <p>Emotions received!</p>}
-                    <button type="button" onClick={handleRestart}>
-                        Restart
-                    </button>
-                </>
-            )}
+            {isFinished &&
+                Object.keys(emotions).length !== parseInt(numGenres, 10) && (
+                    <p>Loading...</p>
+                )}
+            {isFinished &&
+                Object.keys(emotions).length === parseInt(numGenres, 10) && (
+                    <>
+                        <p>
+                            Settings : {fps} images/second for{" "}
+                            {numGenres * sampleDuration} seconds
+                        </p>
+                        <div>
+                            <pre>{JSON.stringify(emotions, null, 2)}</pre>
+                        </div>
+                        {emotions && <p>Emotions received!</p>}
+                        <button type="button" onClick={handleRestart}>
+                            Restart
+                        </button>
+                    </>
+                )}
         </>
     );
 };
