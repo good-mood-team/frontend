@@ -262,10 +262,10 @@ const Home = () => {
                     </button>
                 </>
             )}
-            {isFinished && Object.keys(emotions).length !== numGenres && (
+            {isFinished && Object.keys(emotions).length !== parseInt(numGenres, 10) && (
                 <p>Loading...</p>
             )}
-            {isFinished && Object.keys(emotions).length === numGenres && (
+            {isFinished && Object.keys(emotions).length === parseInt(numGenres, 10) && (
                 <>
                     <p>
                         Settings : {fps} images/second for{" "}
