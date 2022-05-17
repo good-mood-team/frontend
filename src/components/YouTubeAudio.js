@@ -14,6 +14,8 @@ const opts = {
     },
 };
 
+console.log(`Youtube video will start at ${rnd} seconds.`);
+
 const YouTubeAudio = ({ videoId, isPaused, isVideoLoaded, setState }) => {
     const [player, setPlayer] = useState(null);
 
