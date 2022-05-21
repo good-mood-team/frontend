@@ -11,6 +11,7 @@ const CommandInput = ({
     index,
     elIndex,
     regex,
+    length,
     errorMsg,
     setState,
 }) => {
@@ -37,7 +38,7 @@ const CommandInput = ({
                     [name]: "",
                 }));
 
-                alert(`Valeur invalide! ${errorMsg}`);
+                alert(`Saisie invalide! ${errorMsg}`);
             }
         }
     };
@@ -47,7 +48,7 @@ const CommandInput = ({
             <UserTag />
             <input
                 type="text"
-                maxLength="10"
+                maxLength={length}
                 value={value}
                 onChange={(ev) =>
                     setState((prevState) => ({

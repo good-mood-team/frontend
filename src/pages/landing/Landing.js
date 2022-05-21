@@ -35,13 +35,15 @@ const Landing = () => {
             value: age,
             question: "Quel est votre âge ?",
             regex: "([0-9])",
+            length: "3",
             errorMsg: "Veuillez entrez un nombre.",
         },
         {
             name: "gender",
             value: gender,
-            question: "Quel est votre sexe ? [1: Homme / 2: Femme / 3: Autre]",
+            question: "Quel est votre genre ? [1: Homme / 2: Femme / 3: Autre]",
             regex: "([1-3])",
+            length: "1",
             errorMsg:
                 "Veuillez entrez le chiffre correspondant à l'option choisie (1, 2 ou 3).",
         },
@@ -163,6 +165,7 @@ const Landing = () => {
                                                 index={index}
                                                 elIndex={elIndex}
                                                 regex={el.regex}
+                                                length={el.length}
                                                 errorMsg={el.errorMsg}
                                                 setState={setState}
                                             />
