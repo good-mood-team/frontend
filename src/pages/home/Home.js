@@ -5,8 +5,6 @@ import YouTubeAudio from "../../components/YouTubeAudio";
 import { sampleDuration } from "../../config/audioProps";
 import { genres } from "../../config/genres";
 
-const PRODUCTION = true;
-
 const initialState = {
     numGenres: 3,
     fps: 10,
@@ -22,6 +20,7 @@ const initialState = {
     currGenre: null,
     data: {},
     emotions: {},
+    rnd: Math.floor(30, Math.random() * 1800), // between 0 min and 30 min (in seconds)
 };
 
 const Home = () => {
@@ -41,6 +40,7 @@ const Home = () => {
             currGenre,
             data,
             emotions,
+            rnd,
         },
         setState,
     ] = useState(initialState);
@@ -87,10 +87,7 @@ const Home = () => {
                         isPaused: true,
                     }));
 
-                    console.log("This should fire right now!");
-
                     setTimeout(() => {
-                        console.log("This should fire after 2 seconds!");
                         setState((prevState) => ({
                             ...prevState,
                             waitingForNextGenre: true,
@@ -99,7 +96,7 @@ const Home = () => {
 
                     // sends all the screenshots to the server
                     fetch(
-                        PRODUCTION
+                        process.env.REACT_APP_PRODUCTION
                             ? "https://api.good-mood.icu/getUserStats"
                             : "http://localhost:5000/getUserStats",
                         {
@@ -155,7 +152,7 @@ const Home = () => {
             }
 
             fetch(
-                PRODUCTION
+                process.env.REACT_APP_PRODUCTION
                     ? "https://api.good-mood.icu/getYoutubeUrl"
                     : "http://localhost:5000/getYoutubeUrl",
                 {
@@ -218,6 +215,7 @@ const Home = () => {
                     videoId={currGenre.videoId}
                     isPaused={isPaused}
                     isVideoLoaded={isVideoLoaded}
+                    rnd={rnd}
                     setState={setState}
                 />
             )}

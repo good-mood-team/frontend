@@ -1,0 +1,27 @@
+@font-face {
+    font-family: "hack-NF";
+    font-weight: normal;
+    font-style: normal;
+    src: URL("hack-NF-R.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "hack-NF";
+    font-weight: bold;
+    font-style: normal;
+    src: URL("hack-NF-B.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "hack-NF";
+    font-weight: normal;
+    font-style: italic;
+    src: URL("hack-NF-I.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "hack-NF";
+    font-weight: bold;
+    font-style: italic;
+    src: URL("hack-NF-BI.ttf") format("truetype");
+}

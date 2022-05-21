@@ -2,22 +2,20 @@ import React, { useEffect, useState } from "react";
 import YouTube from "react-youtube";
 import { sampleDuration } from "../config/audioProps";
 
-const rnd = Math.floor(30, Math.random() * 1800); // between 0 min and 30 min (in seconds)
-
-const opts = {
-    height: "500",
-    width: "700",
-    playerVars: {
-        autoplay: 1,
-        playsinline: 1,
-        start: rnd,
-        end: sampleDuration + rnd,
-        origin: "http://localhost:3000",
-    },
-};
-
-const YouTubeAudio = ({ videoId, isPaused, isVideoLoaded, setState }) => {
+const YouTubeAudio = ({ videoId, isPaused, isVideoLoaded, rnd, setState }) => {
     const [player, setPlayer] = useState(null);
+
+    const opts = {
+        height: "500",
+        width: "700",
+        playerVars: {
+            autoplay: 1,
+            playsinline: 1,
+            start: rnd,
+            end: sampleDuration + rnd,
+            origin: "http://localhost:3000",
+        },
+    };
 
     useEffect(() => {
         if (player) {
