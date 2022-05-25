@@ -24,7 +24,7 @@ const initialState = {
     currGenre: null,
     data: {},
     emotions: {},
-    rnd: Math.floor(30, Math.random() * 1800), // between 0 min and 30 min (in seconds)
+    rnd: Math.floor(120, Math.random() * 1800), // between 2 min and 30 min (in seconds)
 };
 
 const Home = () => {
