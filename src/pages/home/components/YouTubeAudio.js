@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import YouTube from "react-youtube";
-import { sampleDuration } from "../config/audioProps";
+import { sampleDuration } from "../../../config/audioProps";
 
 const YouTubeAudio = ({ videoId, isPaused, isVideoLoaded, rnd, setState }) => {
     const [player, setPlayer] = useState(null);
 
     const opts = {
-        height: "500",
-        width: "700",
+        height: "0",
+        width: "0",
         playerVars: {
             autoplay: 1,
             playsinline: 1,
@@ -30,7 +30,7 @@ const YouTubeAudio = ({ videoId, isPaused, isVideoLoaded, rnd, setState }) => {
     }, [isPaused, isVideoLoaded, player]);
 
     return (
-        <div style={{ position: "relative", display: "block" }}>
+        <div style={{ position: "absolute", display: "block" }}>
             <YouTube
                 videoId={videoId}
                 loading="lazy"

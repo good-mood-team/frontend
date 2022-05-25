@@ -89,11 +89,11 @@ const Landing = () => {
                 <p>
                     Last Login: {date.toUTCString()} from {ip}
                 </p>
-                <p>Bienvenue ! </p>
+                <p>Bienvenue !</p>
                 <p>
-                    Ce site vous est présenté par Good-Mood. Si vous avez
-                    quelconque question ou avez besoin d'aide, n'hésitez pas à
-                    nous contacter sur support@good-mood.icu.
+                    Ce site vous est présenté par Good-Mood. Si vous avez une
+                    question ou avez besoin d'aide, n'hésitez pas à nous
+                    contacter sur support@good-mood.icu.
                 </p>
                 <p>
                     Le site a été réalisé dans le cadre d’une expérience
@@ -102,10 +102,10 @@ const Landing = () => {
                     un large échantillon de données, nous avons décidé de mettre
                     en place une intelligence artificielle en accès libre
                     capable de reconnaitre les émotions. Il est important de
-                    noter qu’AUCUNE donnée ne sera enregistrée sans votre accord
-                    préalable et que celles-ci resteront anonymes. Ainsi, nous
-                    souhaiterions savoir si vous acceptez de prendre part à
-                    cette expérience en répondant à quelques questions.
+                    noter que nous ne récupérerons que les résultats de vos
+                    "analyses" et que ceux-ci resteront anonymes. Afin de
+                    pouvoir donner plus de sens à ces derniers, nous
+                    souhaiterions vous poser quelques questions.
                 </p>
 
                 {isMobile && (

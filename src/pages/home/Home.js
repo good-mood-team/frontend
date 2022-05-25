@@ -1,9 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useInterval } from "usehooks-ts";
-import Webcam from "../../components/Webcam";
-import YouTubeAudio from "../../components/YouTubeAudio";
+import Settings from "./components/Settings";
+import YouTubeAudio from "./components/YouTubeAudio";
 import { sampleDuration } from "../../config/audioProps";
 import { genres } from "../../config/genres";
+import useUserInfos from "../../hooks/useUserInfo";
+import Run from "./components/Run";
+import { HomeContainer } from "./styled/Home.styled";
 
 const initialState = {
     numGenres: 3,
@@ -45,11 +48,21 @@ const Home = () => {
         setState,
     ] = useState(initialState);
 
+    const [currDevice, setCurrDevice] = useState("");
+
+    const { userInfos } = useUserInfos();
+
     const clearState = () => {
         setState({ ...initialState });
     };
 
     const webcamRef = useRef(null);
+
+    useEffect(() => {
+        if (!userInfos) {
+            window.location.href = "/";
+        }
+    }, [userInfos]);
 
     useInterval(() => {
         if (isPaused) {
@@ -109,7 +122,6 @@ const Home = () => {
                     )
                         .then((r) => r.json())
                         .then((r) => {
-                            console.log(r);
                             setState((prevState) => ({
                                 ...prevState,
                                 emotions: {
@@ -209,7 +221,7 @@ const Home = () => {
     };
 
     return (
-        <>
+        <HomeContainer>
             {currGenre && (
                 <YouTubeAudio
                     videoId={currGenre.videoId}
@@ -219,55 +231,32 @@ const Home = () => {
                     setState={setState}
                 />
             )}
-            <h1>Home</h1>
-            <Webcam webcamRef={webcamRef} />
-            <br />
             {!isRunStarted && (
-                <>
-                    <br />
-                    <p>
-                        Number of genres to be tested on (one genre ~= 10 sec) :
-                    </p>
-                    <input
-                        type="number"
-                        min="1"
-                        max={genres.length.toString()}
-                        onChange={(ev) =>
-                            setState((prevState) => ({
-                                ...prevState,
-                                numGenres: ev.target.value,
-                            }))
-                        }
-                        value={numGenres}
-                    />
-                    <br />
-                    <p>FPS :</p>
-                    <input
-                        type="number"
-                        min="1"
-                        max="10"
-                        onChange={(ev) =>
-                            setState((prevState) => ({
-                                ...prevState,
-                                fps: ev.target.value,
-                            }))
-                        }
-                        value={fps}
-                    />
-                </>
+                <Settings
+                    genres={genres}
+                    numGenres={numGenres}
+                    fps={fps}
+                    isRunStarted={isRunStarted}
+                    handleRunState={handleRunState}
+                    currDevice={currDevice}
+                    setCurrDevice={setCurrDevice}
+                    setState={setState}
+                    webcamRef={webcamRef}
+                />
             )}
-            {!isFinished && waitingForNextGenre && (
-                <button type="button" onClick={handleNextGenre}>
-                    Next genre
-                </button>
-            )}
-            {!isFinished && (
-                <>
-                    <p>Number of screens : {screenCount}</p>
-                    <button type="button" onClick={handleRunState}>
-                        {isRunStarted ? "Stop the run!" : "Start the run!"}
-                    </button>
-                </>
+            {!isFinished && isRunStarted && (
+                <Run
+                    currDevice={currDevice}
+                    webcamRef={webcamRef}
+                    currGenre={currGenre}
+                    handleRunState={handleRunState}
+                    isRunStarted={isRunStarted}
+                    handleNextGenre={handleNextGenre}
+                    isFinished={isFinished}
+                    waitingForNextGenre={waitingForNextGenre}
+                    screenCount={screenCount}
+                    fps={fps}
+                />
             )}
             {isFinished &&
                 Object.keys(emotions).length !== parseInt(numGenres, 10) && (
@@ -289,7 +278,7 @@ const Home = () => {
                         </button>
                     </>
                 )}
-        </>
+        </HomeContainer>
     );
 };
 

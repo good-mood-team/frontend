@@ -1,17 +1,19 @@
 import React from "react";
 import Webcam from "react-webcam";
 
-const WebcamCapture = ({
-    videoConstraints,
-    currDevice,
-    webcamRef,
-}) => {
+const WebcamCapture = ({ currDevice, webcamRef }) => {
+    const videoConstraints = {
+        width: 1280,
+        height: 720,
+        facingMode: "user",
+    };
+
     return (
         <Webcam
-            style={{ transform: "scaleX(-1)" }}
+            style={{ transform: "scaleX(-1)", objectFit: "cover" }}
             audio={false}
-            height={420}
-            width={750}
+            height="100%"
+            width="100%"
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             videoConstraints={{

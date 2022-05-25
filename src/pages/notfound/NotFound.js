@@ -12,8 +12,8 @@ const NotFound = () => {
     return (
         <NotFoundContainer>
             <Container className={init ? "init-done" : "init-waiting"}>
-                <h1>404 not found.</h1>
-                <Link to="/">back to a safer place</Link>
+                <h1>404 page non existante.</h1>
+                <Link to="/">retour en lieu sûr</Link>
             </Container>
         </NotFoundContainer>
     );

@@ -1,14 +1,15 @@
 import React from "react";
 
-const WebcamInput = ({ devices, currDevice, setCurrDevice }) => {
+const WebcamInput = ({ devices, currDevice, id, setCurrDevice }) => {
     return (
         <select
+            id={id}
             name="devices"
             value={currDevice}
             onChange={(ev) => setCurrDevice(ev.target.value)}
         >
             <option value="" disabled>
-                Please choose a camera
+                Veuillez choisir une caméra
             </option>
             {devices.map((device) => {
                 return (
