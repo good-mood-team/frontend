@@ -18,6 +18,10 @@ export const RunContainer = styled.div`
 
     p,
     button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         font-family: "hack-NF";
 
         transform: translate(0, -50%);
@@ -25,32 +29,49 @@ export const RunContainer = styled.div`
         border: 3px solid ${(props) => props.theme.mainColors.lightGreen};
         background-color: black;
         color: ${(props) => props.theme.mainColors.lightGreen};
-        padding: 15px;
+        padding: 15px 0;
+
+        width: 30%;
 
         text-align: center;
 
-        width: 15%;
-
         font-size: 1rem;
+
+        @media (min-width: 768px) {
+            width: 30%;
+        }
+        @media (min-width: 1024px) {
+            width: 25%;
+        }
+        @media (min-width: 1280px) {
+            width: 20%;
+        }
     }
 
     button {
         cursor: pointer;
     }
-`;
 
-export const LoadingContainer = styled.div`
-    height: 100vh;
+    .nextGenre {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-    overflow-y: hidden;
-    background-color: black;
+        font-size: 1.5rem;
+        width: 50%;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-family: "hack-NF";
-    color: ${(props) => props.theme.mainColors.lightGreen};
-
-    font-size: 2rem;
+        @media (min-width: 640px) {
+            width: 60%;
+        }
+        @media (min-width: 768px) {
+            width: 50%;
+        }
+        @media (min-width: 1024px) {
+            width: 35%;
+        }
+        @media (min-width: 1280px) {
+            width: 30%;
+        }
+    }
 `;

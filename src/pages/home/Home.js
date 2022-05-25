@@ -6,7 +6,8 @@ import { sampleDuration } from "../../config/audioProps";
 import { genres } from "../../config/genres";
 import useUserInfos from "../../hooks/useUserInfo";
 import Run from "./components/Run";
-import { HomeContainer } from "./styled/Home.styled";
+import Loading from "./components/Loading";
+import Results from "./components/Results";
 
 const initialState = {
     numGenres: 3,
@@ -109,7 +110,7 @@ const Home = () => {
 
                     // sends all the screenshots to the server
                     fetch(
-                        process.env.REACT_APP_PRODUCTION
+                        process.env.REACT_APP_PRODUCTION === "true"
                             ? "https://api.good-mood.icu/getUserStats"
                             : "http://localhost:5000/getUserStats",
                         {
@@ -164,7 +165,7 @@ const Home = () => {
             }
 
             fetch(
-                process.env.REACT_APP_PRODUCTION
+                process.env.REACT_APP_PRODUCTION === "true"
                     ? "https://api.good-mood.icu/getYoutubeUrl"
                     : "http://localhost:5000/getYoutubeUrl",
                 {
@@ -221,7 +222,7 @@ const Home = () => {
     };
 
     return (
-        <HomeContainer>
+        <>
             {currGenre && (
                 <YouTubeAudio
                     videoId={currGenre.videoId}
@@ -260,25 +261,16 @@ const Home = () => {
             )}
             {isFinished &&
                 Object.keys(emotions).length !== parseInt(numGenres, 10) && (
-                    <p>Loading...</p>
+                    <Loading isFinished />
                 )}
             {isFinished &&
                 Object.keys(emotions).length === parseInt(numGenres, 10) && (
-                    <>
-                        <p>
-                            Settings : {fps} images/second for{" "}
-                            {numGenres * sampleDuration} seconds
-                        </p>
-                        <div>
-                            <pre>{JSON.stringify(emotions, null, 2)}</pre>
-                        </div>
-                        {emotions && <p>Emotions received!</p>}
-                        <button type="button" onClick={handleRestart}>
-                            Restart
-                        </button>
-                    </>
+                    <Results
+                        emotions={emotions}
+                        handleRestart={handleRestart}
+                    />
                 )}
-        </HomeContainer>
+        </>
     );
 };
 

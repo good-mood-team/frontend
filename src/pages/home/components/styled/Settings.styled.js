@@ -9,6 +9,15 @@ export const SettingsContainer = styled.div`
     @media (min-width: 1500px) {
         overflow-y: hidden;
     }
+
+    .version {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+
+        font-family: "hack-NF";
+        color: ${(props) => props.theme.mainColors.lightGreen};
+    }
 `;
 
 export const Container = styled.div`
@@ -78,6 +87,8 @@ export const FormContainer = styled.div`
         border: 3px solid ${(props) => props.theme.mainColors.lightGreen};
         background-color: black;
         outline: none;
+
+        font-size: 1rem;
     }
 
     input,

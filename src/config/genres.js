@@ -12,6 +12,11 @@ export const genres = [
     "PUNK",
     "SAX",
     "LOFI",
-    "RAP",
+    "RAP FR",
     "TRAP",
+    "RAP US",
+    "DRILL",
+    "CLASSICAL",
+    "REGETTON",
+    "BOOM BAP"
 ];

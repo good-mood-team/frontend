@@ -1,5 +1,6 @@
 import React from "react";
-import { LoadingContainer, RunContainer } from "./styled/Run.styled";
+import Loading from "./Loading";
+import { RunContainer } from "./styled/Run.styled";
 import WebcamCapture from "./WebcamCapture";
 
 const Run = ({
@@ -23,13 +24,17 @@ const Run = ({
                             currDevice={currDevice}
                             webcamRef={webcamRef}
                         />
+                        {!isFinished && waitingForNextGenre && (
+                            <button
+                                className="nextGenre"
+                                type="button"
+                                onClick={handleNextGenre}
+                            >
+                                Appuyer pour continuer
+                            </button>
+                        )}
                         <div className="controls">
                             <p>Genre joué : {currGenre.genre}</p>
-                            {!isFinished && waitingForNextGenre && (
-                                <button type="button" onClick={handleNextGenre}>
-                                    Next genre
-                                </button>
-                            )}
                             {!isFinished &&
                                 !waitingForNextGenre &&
                                 isRunStarted &&
@@ -46,9 +51,7 @@ const Run = ({
                 </RunContainer>
             )}
             {!currGenre && (
-                <LoadingContainer>
-                    <p>Chargement...</p>
-                </LoadingContainer>
+                <Loading />
             )}
         </>
     );

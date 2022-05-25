@@ -63,7 +63,7 @@ const Settings = ({
                             }
                             value={numGenres}
                         />
-                        <label htmlFor="fps">FPS :</label>
+                        <label htmlFor="fps">Images par seconde :</label>
                         <input
                             type="number"
                             min="1"
@@ -89,6 +89,7 @@ const Settings = ({
                     <WebcamCapture currDevice={currDevice} />
                 </div>
             </Container>
+            <p className="version">v.{process.env.REACT_APP_VERSION}</p>
         </SettingsContainer>
     );
 };

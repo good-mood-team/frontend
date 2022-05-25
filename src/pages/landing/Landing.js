@@ -75,14 +75,14 @@ const Landing = () => {
         setShowDots(true);
         setTimeout(() => {
             window.location.href = "/app";
-        }, 5000);
+        }, 3000);
     };
 
     return (
         <LandingContainer>
             <Container className={init ? "init-done" : "init-waiting"}>
                 <img
-                    src={`${process.env.PUBLIC_URL}/medias/images/ascii.png`}
+                    src={`${process.env.PUBLIC_URL}/medias/images/ascii_landing.png`}
                     className="ascii"
                     alt="ascii"
                 />
