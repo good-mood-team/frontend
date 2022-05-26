@@ -18,5 +18,7 @@ export const genres = [
     "DRILL",
     "CLASSICAL",
     "REGETTON",
-    "BOOM BAP"
+    "BOOM BAP",
+    "DUBSTEP",
+    "SYNTHWAVE",
 ];

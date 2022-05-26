@@ -8,6 +8,7 @@ import useUserInfos from "../../hooks/useUserInfo";
 import Run from "./components/Run";
 import Loading from "./components/Loading";
 import Results from "./components/Results";
+import Timeout from "./components/Timeout";
 
 const initialState = {
     numGenres: 3,
@@ -25,6 +26,7 @@ const initialState = {
     data: {},
     emotions: {},
     rnd: Math.floor(120, Math.random() * 1800), // between 2 min and 30 min (in seconds)
+    timeout: false,
 };
 
 const Home = () => {
@@ -45,6 +47,7 @@ const Home = () => {
             data,
             emotions,
             rnd,
+            timeout,
         },
         setState,
     ] = useState(initialState);
@@ -76,6 +79,13 @@ const Home = () => {
                         ...prevState,
                         isFinished: true,
                     }));
+
+                    setTimeout(() => {
+                        setState((prevState) => ({
+                            ...prevState,
+                            timeout: true,
+                        }));
+                    }, 1 * 60 * 1000);
                 }
                 // run is not completed so it is aborted
                 else {
@@ -260,10 +270,13 @@ const Home = () => {
                 />
             )}
             {isFinished &&
+                !timeout &&
                 Object.keys(emotions).length !== parseInt(numGenres, 10) && (
                     <Loading isFinished />
                 )}
+            {timeout && <Timeout handleRestart={handleRestart} />}
             {isFinished &&
+                !timeout &&
                 Object.keys(emotions).length === parseInt(numGenres, 10) && (
                     <Results
                         emotions={emotions}

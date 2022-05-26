@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import EmotionCard from "./EmotionCard";
 import { ResultsContainer } from "./styled/Results.styled";
@@ -20,7 +21,7 @@ const Results = ({ emotions, handleRestart }) => {
                 );
             })}
             <button type="button" onClick={handleRestart}>
-                Restart
+                Retour à la page d'accueil
             </button>
         </ResultsContainer>
     );
