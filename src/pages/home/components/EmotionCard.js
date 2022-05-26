@@ -9,13 +9,15 @@ const EmotionCard = ({ emotionName, emotions }) => {
             <div className="emotionResults">
                 {Object.keys(emotions[emotionName]).length > 0 && (
                     <>
-                        {Object.keys(emotions[emotionName]).map((key) => {
-                            return (
-                                <p key={emotionName} className="emotionResult">
-                                    {key}: {emotions[emotionName][key]}%
-                                </p>
-                            );
-                        })}
+                        {Object.keys(emotions[emotionName]).map(
+                            (key, index) => {
+                                return (
+                                    <p key={index} className="emotionResult">
+                                        {key}: {emotions[emotionName][key]}%
+                                    </p>
+                                );
+                            }
+                        )}
                     </>
                 )}
                 {Object.keys(emotions[emotionName]).length === 0 && (

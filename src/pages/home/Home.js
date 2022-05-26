@@ -66,7 +66,15 @@ const Home = () => {
         if (!userInfos) {
             window.location.href = "/";
         }
-    }, [userInfos]);
+
+        if (Object.keys(emotions).length === parseInt(numGenres, 10)) {
+            let id = window.setTimeout(() => {}, 0);
+
+            while (id--) {
+                window.clearTimeout(id); // will do nothing if no timeout with id is present
+            }
+        }
+    }, [userInfos, emotions, numGenres]);
 
     useInterval(() => {
         if (isPaused) {
@@ -101,8 +109,10 @@ const Home = () => {
                 ) {
                     toPlayGenres.shift();
 
-                    const dataToSend = { ...data };
-                    const currGenreToSend = { ...currGenre };
+                    const dataToSend = {
+                        results: data,
+                        genre: currGenre.genre,
+                    };
 
                     setState((prevState) => ({
                         ...prevState,
@@ -125,7 +135,11 @@ const Home = () => {
                             : "http://localhost:5000/getUserStats",
                         {
                             method: "POST",
-                            body: JSON.stringify(dataToSend),
+                            body: JSON.stringify({
+                                age: userInfos.age,
+                                gender: userInfos.gender,
+                                ...dataToSend,
+                            }),
                             headers: {
                                 "Content-Type": "application/json;",
                             },
@@ -137,8 +151,7 @@ const Home = () => {
                                 ...prevState,
                                 emotions: {
                                     ...emotions,
-                                    [currGenreToSend.genre]:
-                                        r.emotions[currGenreToSend.genre],
+                                    [r.genre]: r.emotions[r.genre],
                                 },
                             }));
                         });
