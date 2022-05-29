@@ -24,18 +24,19 @@
 // ];
 
 export const genres = [
+    "BLUES",
     "COUNTRY",
     "ELECTRONIC",
     "FOLK",
     "JAZZ",
     "POP",
     "RYTHM AND BLUES",
-    "ROCK",
+    "ROCK N ROLL",
     "METAL",
     "FUNK",
     "LOFI",
     "RAP US",
     "DRILL",
-    "CLASSICAL",
+    "CLASSICAL MUSIC",
     "SYNTHWAVE",
 ];
