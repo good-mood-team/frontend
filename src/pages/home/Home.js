@@ -9,6 +9,7 @@ import Run from "./components/Run";
 import Loading from "./components/Loading";
 import Results from "./components/Results";
 import Timeout from "./components/Timeout";
+import ApiLimit from "./components/ApiLimit";
 
 const initialState = {
     numGenres: 3,
@@ -27,6 +28,7 @@ const initialState = {
     emotions: {},
     rnd: Math.floor(120, Math.random() * 1800), // between 2 min and 30 min (in seconds)
     timeout: false,
+    apiLimit: false,
 };
 
 const Home = () => {
@@ -48,6 +50,7 @@ const Home = () => {
             emotions,
             rnd,
             timeout,
+            apiLimit,
         },
         setState,
     ] = useState(initialState);
@@ -109,8 +112,11 @@ const Home = () => {
                 ) {
                     toPlayGenres.shift();
 
+                    const splicedScreen = [...data[currGenre.genre]];
+                    splicedScreen.splice(0, 5 * fps);
+
                     const dataToSend = {
-                        results: data,
+                        results: { ...data, [currGenre.genre]: splicedScreen },
                         genre: currGenre.genre,
                     };
 
@@ -203,11 +209,22 @@ const Home = () => {
             )
                 .then((r) => r.json())
                 .then((r) => {
+                    if (r.status === 114) {
+                        setState((prevState) => ({
+                            ...prevState,
+                            apiLimit: true,
+                        }));
+
+                        return 0;
+                    }
+
                     setState((prevState) => ({
                         ...prevState,
                         currGenre: r.tracks[0],
                         toPlayGenres: r.tracks,
                     }));
+
+                    return 0;
                 })
                 .then(() => {
                     if (init) {
@@ -268,7 +285,8 @@ const Home = () => {
                     webcamRef={webcamRef}
                 />
             )}
-            {!isFinished && isRunStarted && (
+            {apiLimit && <ApiLimit handleRestart={handleRestart} />}
+            {!isFinished && isRunStarted && !apiLimit && (
                 <Run
                     currDevice={currDevice}
                     webcamRef={webcamRef}

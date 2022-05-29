@@ -1,4 +1,5 @@
 import React from "react";
+import { sampleDuration } from "../../../config/audioProps";
 import Loading from "./Loading";
 import { RunContainer } from "./styled/Run.styled";
 import WebcamCapture from "./WebcamCapture";
@@ -39,7 +40,11 @@ const Run = ({
                                 !waitingForNextGenre &&
                                 isRunStarted &&
                                 currGenre && (
-                                    <p>{Math.round(10 - screenCount / fps)}</p>
+                                    <p>
+                                        {Math.round(
+                                            sampleDuration - screenCount / fps
+                                        )}
+                                    </p>
                                 )}
                             <button type="button" onClick={handleRunState}>
                                 {isRunStarted
@@ -50,9 +55,7 @@ const Run = ({
                     </>
                 </RunContainer>
             )}
-            {!currGenre && (
-                <Loading />
-            )}
+            {!currGenre && <Loading />}
         </>
     );
 };
