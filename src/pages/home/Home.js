@@ -96,7 +96,7 @@ const Home = () => {
                             ...prevState,
                             timeout: true,
                         }));
-                    }, 1 * 60 * 1000);
+                    }, 2 * 60 * 1000);
                 }
                 // run is not completed so it is aborted
                 else {
